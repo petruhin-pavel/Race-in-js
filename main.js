@@ -133,7 +133,6 @@ function moveEnemy() {
       carRect.left <= enemyRect.right &&
       carRect.bottom >= enemyRect.top) {
       setting.start = false;
-      console.warn('ДТП');
       start.classList.remove('hide');
       start.style.top = score.offsetHeight;
     }
