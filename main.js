@@ -144,6 +144,4 @@ function moveEnemy() {
       item.style.left = Math.floor(Math.random() * (gameArea.offsetWidth - 50)) + 'px';
     }
   });
-
-
 }
