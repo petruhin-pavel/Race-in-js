@@ -28,7 +28,7 @@ const keys = {
 const setting = {
   start: false,
   score: 0,
-  speed: 3,
+  speed: 5,
   traffic: 3
 };
 
@@ -40,6 +40,10 @@ function getQuantityElements(heightElement) {
 // Объявляем функции ========
 function startGame() {
   start.classList.add('hide');
+  gameArea.innerHTML = ''; // очищаем игровое поле
+  car.style.left = '125px';
+  car.style.top = 'auto';
+  car.style.bottom = '10px';
 
   for (let i = 0; i < getQuantityElements(100); i++) {
     const line = document.createElement('div');
@@ -59,6 +63,7 @@ function startGame() {
     gameArea.appendChild(enemy);
   }
 
+  setting.score = 0;
   setting.start = true;
   gameArea.appendChild(car); // вставить дочерний элемент
   setting.x = car.offsetLeft; // Управление автомобилем с помощью отступа слева
@@ -70,6 +75,8 @@ function startGame() {
 function playGame() {
   // Если (пока) setting.start строго равен true, перезапускается анимация
   if (setting.start) { // (setting.start === true) тоже самое
+    setting.score += setting.speed;
+    score.innerHTML = 'SCORE<br>' + setting.score;
     moveRoad(); // движение дороги
     moveEnemy();
     if (keys.ArrowLeft && setting.x > 0) { // (keys.ArrowLeft === true)
@@ -117,9 +124,23 @@ function moveRoad() {
 function moveEnemy() {
   let enemy = document.querySelectorAll('.enemy');
   enemy.forEach(function (item) {
+    let carRect = car.getBoundingClientRect(); // получаем координаты машинок
+    let enemyRect = item.getBoundingClientRect();
+
+    // Условия при столкновении машин
+    if (carRect.top <= enemyRect.bottom &&
+      carRect.right >= enemyRect.left &&
+      carRect.left <= enemyRect.right &&
+      carRect.bottom >= enemyRect.top) {
+      setting.start = false;
+      console.warn('ДТП');
+      start.classList.remove('hide');
+      start.style.top = score.offsetHeight;
+    }
+
     item.y += setting.speed / 2;
     item.style.top = item.y + 'px';
-    if (item >= document.documentElement.clientHeight) {
+    if (item.y >= document.documentElement.clientHeight) {
       item.y = -100 * setting.traffic;
       item.style.left = Math.floor(Math.random() * (gameArea.offsetWidth - 50)) + 'px';
     }
