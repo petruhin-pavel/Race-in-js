@@ -1,8 +1,16 @@
+//const MAX_ENEMY = 7;
+
 // Переменные ===============
 const score = document.querySelector('.score'),
   start = document.querySelector('.start'),
   gameArea = document.querySelector('.gameArea'),
   car = document.createElement('div'); // Создаем елемент (div)
+
+// Добавляем музыку
+const audio = document.createElement('embed');
+
+audio.src = 'audio.mp3';
+audio.style.cssText = `position: absolute; top: -1000px;`;
 
 car.classList.add('car'); // добавляем класс
 // Обработчики событий =====
@@ -55,6 +63,7 @@ function startGame() {
 
   for (let i = 0; i < getQuantityElements(100 * setting.traffic); i++) {
     const enemy = document.createElement('div');
+    //const randomEnemy = Math.floor(Math.random() * MAX_ENEMY) + 1;
     enemy.classList.add('enemy');
     enemy.y = -100 * setting.traffic * (i + 1);
     enemy.style.left = Math.floor(Math.random() * (gameArea.offsetWidth - 50)) + 'px';
